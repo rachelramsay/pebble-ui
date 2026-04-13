@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pebble UI — Figma Assignment</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --brand:        #534AB7;
+    --brand-hover:  #3C3489;
+    --brand-subtle: #EEEDFE;
+    --brand-mid:    #7F77DD;
+    --surface:      #FFFFFF;
+    --surface-subtle: #F1EFE8;
+    --text:         #2C2C2A;
+    --text-muted:   #5F5E5A;
+    --text-light:   #888780;
+    --border:       #D3D1C7;
+    --success:      #1D9E75;
+    --success-subtle: #E1F5EE;
+    --warning:      #BA7517;
+    --warning-subtle: #FAEEDA;
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.09), 0 2px 4px rgba(0,0,0,0.05);
+  }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text);
+    background: var(--surface-subtle);
+  }
+
+  /* ── Cover ── */
+  .cover {
+    background: var(--brand);
+    color: #fff;
+    padding: 80px 60px 64px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 360px; height: 360px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+  }
+  .cover::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: 120px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+  .cover-eyebrow {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.65;
+    margin-bottom: 16px;
+  }
+  .cover-title {
+    font-size: 42px;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  .cover-title span { opacity: 0.55; display: block; font-weight: 400; font-size: 28px; margin-top: 6px; }
+  .cover-desc {
+    font-size: 16px;
+    opacity: 0.75;
+    max-width: 520px;
+    line-height: 1.6;
+    margin-bottom: 40px;
+  }
+  .cover-meta {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .cover-meta-item { font-size: 13px; opacity: 0.65; }
+  .cover-meta-item strong { display: block; font-size: 15px; font-weight: 500; opacity: 1; color: #fff; margin-bottom: 2px; }
+
+  /* ── Layout ── */
+  .page {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 32px 80px;
+  }
+
+  /* ── Section ── */
+  .section {
+    margin-top: 56px;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1.5px solid var(--border);
+  }
+  .section-num {
+    width: 32px; height: 32px;
+    background: var(--brand);
+    color: #fff;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .section-subtitle {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow-sm);
+  }
+  .card-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card p { font-size: 14px; color: var(--text-muted); line-height: 1.65; }
+  .card p + p { margin-top: 8px; }
+
+  /* ── Steps ── */
+  .steps { display: flex; flex-direction: column; gap: 0; }
+  .step {
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    gap: 0 16px;
+    position: relative;
+  }
+  .step:not(:last-child) .step-line {
+    position: absolute;
+    left: 13px; top: 28px; bottom: 0;
+    width: 2px;
+    background: var(--border);
+  }
+  .step-dot {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--brand-subtle);
+    border: 2px solid var(--brand-mid);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--brand);
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+    margin-top: 2px;
+  }
+  .step-body { padding-bottom: 28px; }
+  .step-body h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+  .step-body p { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+  .step-body p + p { margin-top: 6px; }
+
+  /* ── Token table ── */
+  .token-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    border: 1.5px solid var(--border);
+  }
+  .token-table thead { background: var(--surface-subtle); }
+  .token-table th {
+    text-align: left;
+    padding: 10px 16px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    border-bottom: 1.5px solid var(--border);
+  }
+  .token-table td {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    vertical-align: top;
+  }
+  .token-table tr:last-child td { border-bottom: none; }
+  .token-table code {
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 11px;
+    background: var(--surface-subtle);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1px 6px;
+    color: var(--brand);
+  }
+  .req { color: var(--text-muted); font-size: 12px; }
+  .req strong { color: var(--text); font-weight: 500; }
+
+  /* ── Callouts ── */
+  .callout {
+    border-radius: var(--radius-md);
+    padding: 14px 16px;
+    font-size: 13px;
+    line-height: 1.6;
+    margin: 16px 0;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .callout-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+  .callout p { margin: 0; }
+  .callout p + p { margin-top: 4px; }
+  .callout--tip { background: var(--brand-subtle); color: var(--brand-hover); }
+  .callout--warn { background: var(--warning-subtle); color: var(--warning); }
+  .callout--good { background: var(--success-subtle); color: #085041; }
+
+  /* ── Checklist ── */
+  .checklist { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.5;
+  }
+  .check-box {
+    width: 18px; height: 18px;
+    border: 2px solid var(--brand-mid);
+    border-radius: 4px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    background: var(--surface);
+  }
+  .checklist .sub {
+    font-size: 12px;
+    color: var(--text-muted);
+    display: block;
+    margin-top: 2px;
+  }
+
+  /* ── Badge ── */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 999px;
+  }
+  .badge--required { background: var(--brand-subtle); color: var(--brand); }
+  .badge--optional { background: var(--surface-subtle); color: var(--text-muted); border: 1px solid var(--border); }
+  .badge--plugin   { background: #FFF3E0; color: #E65100; }
+
+  /* ── Two col ── */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  /* ── Rubric ── */
+  .rubric-row {
+    display: grid;
+    grid-template-columns: 1fr 60px 60px 60px;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .rubric-row:first-child {
+    background: var(--surface-subtle);
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+  }
+  .rubric-cell {
+    padding: 10px 14px;
+    font-size: 13px;
+  }
+  .rubric-cell.header {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-align: center;
+  }
+  .rubric-cell.pts {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+  .rubric-wrap {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+  }
+  .rubric-row:last-child { border-bottom: none; }
+
+  /* ── File structure ── */
+  .file-tree {
+    background: #1e1e2e;
+    color: #cdd6f4;
+    border-radius: var(--radius-lg);
+    padding: 20px 24px;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 12.5px;
+    line-height: 1.8;
+    overflow-x: auto;
+  }
+  .file-tree .dir  { color: #89b4fa; }
+  .file-tree .file { color: #cdd6f4; }
+  .file-tree .note { color: #6c7086; }
+  .file-tree .req-file { color: #a6e3a1; }
+
+  /* ── Divider ── */
+  .divider {
+    border: none;
+    border-top: 1.5px solid var(--border);
+    margin: 40px 0;
+  }
+
+  /* ── Footer ── */
+  .footer {
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-light);
+    padding: 32px;
+    border-top: 1px solid var(--border);
+    margin-top: 64px;
+  }
+
+  .page a { color: var(--brand); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
+  .page a:hover { color: var(--brand-hover); }
+
+  @media print {
+    body { background: white; }
+    .cover { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .callout, .card { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ COVER ══ -->
+<div class="cover">
+  <p class="cover-eyebrow">IXD Design Systems — Part 1 of 4</p>
+  <h1 class="cover-title">
+    Pebble UI
+    <span>Figma Token System</span>
+  </h1>
+  <p class="cover-desc">
+    You'll build the visual foundation of your component library in Figma — a structured token system using Variables, Modes, and Tokens Studio — before writing a single line of code.
+  </p>
+  <div class="cover-meta">
+    <div class="cover-meta-item"><strong>Deliverable</strong>Figma file shared with instructor</div>
+    <div class="cover-meta-item"><strong>Est. time</strong>3–5 hours</div>
+    <div class="cover-meta-item"><strong>Tools</strong>Figma + Tokens Studio plugin</div>
+    <div class="cover-meta-item"><strong>Next step</strong>Export tokens.json → Part 2</div>
+  </div>
+</div>
+
+<div class="page">
+
+  <!-- Links this brief to the code repo + final mobile mockup (also in design/) -->
+  <div class="section" style="margin-top: 32px;">
+    <div class="callout callout--good" style="margin-bottom: 0;">
+      <span class="callout-icon">📁</span>
+      <div>
+        <p><strong>Repository bundle.</strong> This page, the <a href="final_project_mobile_mockup.html">final project mobile mockup</a>, and the Pebble UI app all belong to one student assignment. Edit files under <code>design/</code> alongside the code at the repo root.</p>
+        <p style="margin-top: 10px;"><strong>Code project (Part 2+):</strong> Place Tokens Studio export at <code>src/tokens/tokens.json</code>, then run <code>npm run tokens</code> to regenerate <code>src/tokens/tokens.css</code>. UI components are in <code>src/components/</code>; preview with <code>npm run storybook</code> or <code>npm run dev</code>. See <code>README.md</code> in the project root for the full pipeline.</p>
+        <p style="margin-top: 10px;"><strong>Quick open:</strong> <a href="index.html">Assignment folder index</a> lists every static page in this folder.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ OVERVIEW ══ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">→</div>
+      <div>
+        <div class="section-title">What you're building</div>
+        <div class="section-subtitle">And why it's structured this way</div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title">🎨 A two-layer token system</div>
+        <p>Global tokens hold raw values (your full color palette, every spacing step). Semantic tokens reference globals and give values <em>meaning</em> — <code>color/brand/default</code> points to <code>color/purple/600</code>. Components only ever use semantic tokens.</p>
+      </div>
+      <div class="card">
+        <div class="card-title">🌗 Two modes, one source</div>
+        <p>Light and dark mode are handled through Figma Variable Modes — not duplicate components. You define the mode values once; Figma (and later your CSS) swaps them automatically.</p>
+      </div>
+      <div class="card">
+        <div class="card-title">🔌 Tokens Studio as the bridge</div>
+        <p>Tokens Studio reads your Figma Variables and exports a structured <code>tokens.json</code> file. That file is what feeds Style Dictionary in the code project. Your Figma decisions become CSS custom properties.</p>
+      </div>
+      <div class="card">
+        <div class="card-title">🧩 Four components, token-driven</div>
+        <p>Button, Card, Input, and Badge. Every color, spacing, and radius value in these components must reference a variable — no hardcoded values anywhere in the file.</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══ PART 1: FILE SETUP ══ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <div>
+        <div class="section-title">File setup</div>
+        <div class="section-subtitle">Organize your Figma file before building anything</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Recommended page structure</div>
+      <p>Create these pages in order — the naming matters for grading.</p>
+    </div>
+
+    <div class="file-tree">
+      <span class="dir">📄 Cover</span>          <span class="note">  ← your name, project title, date</span><br>
+      <span class="dir">📄 🎨 Tokens</span>       <span class="note">  ← Variables reference sheet (auto-layout table)</span><br>
+      <span class="dir">📄 Components</span>      <span class="note">  ← all four component sets</span><br>
+      <span class="dir">📄 ☀️ Light preview</span><span class="note">  ← assembled screens in light mode</span><br>
+      <span class="dir">📄 🌙 Dark preview</span> <span class="note">  ← same screens switched to dark mode</span><br>
+      <span class="dir">📄 🔌 Tokens Studio</span><span class="note">  ← plugin panel screenshots + export notes</span>
+    </div>
+
+    <div class="callout callout--tip">
+      <span class="callout-icon">💡</span>
+      <p>The Tokens page is a <strong>documentation artifact</strong> — lay out your Variables in an auto-layout frame so someone reading your file can see the full token system at a glance. Think of it like a style guide page.</p>
+    </div>
+  </div>
+
+
+  <!-- ══ PART 2: VARIABLES ══ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <div>
+        <div class="section-title">Figma Variables</div>
+        <div class="section-subtitle">Build the two-layer token system in the Variables panel</div>
+      </div>
+    </div>
+
+    <div class="callout callout--warn">
+      <span class="callout-icon">⚠️</span>
+      <p><strong>Naming is everything.</strong> Tokens Studio maps your Figma Variable names directly to JSON keys. Use forward-slash grouping: <code>color/brand/default</code> not <code>Brand Default Color</code>. Wrong naming = broken export.</p>
+    </div>
+
+    <div class="card" style="margin-top: 20px;">
+      <div class="card-title">Layer 1 — Global collection <span class="badge badge--required">Required</span></div>
+      <p style="margin-bottom: 16px;">Raw values only. No references to other variables. This is your palette and scale — nothing here has a semantic meaning yet.</p>
+      <table class="token-table">
+        <thead>
+          <tr>
+            <th>Variable name</th>
+            <th>Type</th>
+            <th>Requirement</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>color/[hue]/100</code> through <code>/600</code></td>
+            <td>Color</td>
+            <td class="req"><strong>Min 1 hue, 4 stops.</strong> Choose your brand color family.</td>
+          </tr>
+          <tr>
+            <td><code>color/gray/50</code> through <code>/900</code></td>
+            <td>Color</td>
+            <td class="req"><strong>Min 5 stops.</strong> Used for surfaces, borders, text.</td>
+          </tr>
+          <tr>
+            <td><code>color/white</code>, <code>color/black</code></td>
+            <td>Color</td>
+            <td class="req">Absolute values for text-on-color.</td>
+          </tr>
+          <tr>
+            <td><code>spacing/1</code> through <code>spacing/6</code></td>
+            <td>Number</td>
+            <td class="req"><strong>Min 4 steps</strong> on a consistent scale (4/8/16/24 or similar).</td>
+          </tr>
+          <tr>
+            <td><code>radius/sm</code>, <code>radius/md</code>, <code>radius/lg</code>, <code>radius/full</code></td>
+            <td>Number</td>
+            <td class="req">All four required.</td>
+          </tr>
+          <tr>
+            <td><code>font/size/xs</code> through <code>font/size/xl</code></td>
+            <td>Number</td>
+            <td class="req">Min 4 sizes.</td>
+          </tr>
+          <tr>
+            <td><code>font/weight/regular</code>, <code>/medium</code>, <code>/bold</code></td>
+            <td>Number</td>
+            <td class="req">All three.</td>
+          </tr>
+          <tr>
+            <td><code>color/[feedback-hue]/subtle</code> + <code>/default</code></td>
+            <td>Color</td>
+            <td class="req">Success + error colors, 2 stops each.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Layer 2 — Semantic collection <span class="badge badge--required">Required</span></div>
+      <p style="margin-bottom: 16px;">References only — every value here points to a Global variable. No raw hex values in this collection.</p>
+      <table class="token-table">
+        <thead>
+          <tr><th>Variable name</th><th>Points to</th><th>Purpose</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>color/brand/default</code></td>
+            <td><code>color/[hue]/600</code></td>
+            <td class="req">Primary action color</td>
+          </tr>
+          <tr>
+            <td><code>color/brand/hover</code></td>
+            <td><code>color/[hue]/800</code></td>
+            <td class="req">Hover/active state</td>
+          </tr>
+          <tr>
+            <td><code>color/brand/subtle</code></td>
+            <td><code>color/[hue]/100</code></td>
+            <td class="req">Ghost button bg, focus ring fill</td>
+          </tr>
+          <tr>
+            <td><code>color/surface/default</code></td>
+            <td><code>color/white</code></td>
+            <td class="req">Card and input backgrounds</td>
+          </tr>
+          <tr>
+            <td><code>color/surface/subtle</code></td>
+            <td><code>color/gray/50</code></td>
+            <td class="req">Page background</td>
+          </tr>
+          <tr>
+            <td><code>color/text/primary</code></td>
+            <td><code>color/gray/900</code></td>
+            <td class="req">Body text</td>
+          </tr>
+          <tr>
+            <td><code>color/text/secondary</code></td>
+            <td><code>color/gray/700</code></td>
+            <td class="req">Labels, captions</td>
+          </tr>
+          <tr>
+            <td><code>color/text/disabled</code></td>
+            <td><code>color/gray/300</code></td>
+            <td class="req">Disabled states</td>
+          </tr>
+          <tr>
+            <td><code>color/text/on-brand</code></td>
+            <td><code>color/white</code></td>
+            <td class="req">Text on filled brand buttons</td>
+          </tr>
+          <tr>
+            <td><code>color/border/default</code></td>
+            <td><code>color/gray/100</code></td>
+            <td class="req">Subtle dividers</td>
+          </tr>
+          <tr>
+            <td><code>color/border/strong</code></td>
+            <td><code>color/gray/300</code></td>
+            <td class="req">Input borders</td>
+          </tr>
+          <tr>
+            <td><code>color/feedback/success</code> + <code>/error</code></td>
+            <td>Feedback globals</td>
+            <td class="req">Badge + Input states</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="steps" style="margin-top: 24px;">
+      <div class="step">
+        <div class="step-dot">A</div>
+        <div class="step-line"></div>
+        <div class="step-body">
+          <h4>Create the Global collection first</h4>
+          <p>Open Variables panel → + New collection → name it "Global". Add all raw values. Do not apply these to any component directly — they're the palette only.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-dot">B</div>
+        <div class="step-line"></div>
+        <div class="step-body">
+          <h4>Create the Semantic collection and set references</h4>
+          <p>+ New collection → name it "Semantic". For each variable, click the value field and use the library icon to point it at a Global variable — not a raw color. If you're typing a hex code here, you're doing it wrong.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-dot">C</div>
+        <div class="step-line"></div>
+        <div class="step-body">
+          <h4>Add Modes to the Semantic collection</h4>
+          <p>In the Semantic collection header, click "1 mode" → add a second mode named "Dark". Override each variable's dark value — point to darker global stops for surfaces, lighter stops for text. Test by switching modes on a frame.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-dot">D</div>
+        <div class="step-line"></div>
+        <div class="step-body">
+          <h4>Document on the Tokens page</h4>
+          <p>Build an auto-layout reference frame showing each semantic token, its value in light mode, and its value in dark mode. Use text + color fill swatches. This is part of your grade.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══ PART 3: COMPONENTS ══ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <div>
+        <div class="section-title">Components</div>
+        <div class="section-subtitle">Four component sets, all values from Semantic variables</div>
+      </div>
+    </div>
+
+    <div class="callout callout--tip">
+      <span class="callout-icon">💡</span>
+      <p>Before building any component, go to <strong>Edit → Preferences → Enable variable scoping</strong> to make sure variables show up in the fill/stroke pickers as you work.</p>
+    </div>
+
+    <!-- Button -->
+    <div class="card">
+      <div class="card-title">Button <span class="badge badge--required">Required</span></div>
+      <p>Build as a component set using Variants.</p>
+      <br>
+      <table class="token-table">
+        <thead><tr><th>Property</th><th>Variants / states</th><th>Token used</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Variant</td>
+            <td>Primary, Secondary, Ghost, Danger</td>
+            <td class="req">Each maps to different brand/surface/feedback tokens</td>
+          </tr>
+          <tr>
+            <td>Size</td>
+            <td>Small, Medium, Large</td>
+            <td class="req"><code>spacing/*</code> for padding, <code>font/size/*</code> for label</td>
+          </tr>
+          <tr>
+            <td>State</td>
+            <td>Default, Hover, Disabled, Loading</td>
+            <td class="req">Hover uses <code>color/brand/hover</code>; disabled uses opacity or <code>color/text/disabled</code></td>
+          </tr>
+          <tr>
+            <td>Border radius</td>
+            <td>All variants</td>
+            <td class="req"><code>radius/md</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Card -->
+    <div class="card">
+      <div class="card-title">Card <span class="badge badge--required">Required</span></div>
+      <table class="token-table">
+        <thead><tr><th>Property</th><th>Variants / states</th><th>Token used</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Variant</td>
+            <td>Default, Outlined, Elevated</td>
+            <td class="req">Surface + border tokens; elevated has no border, uses shadow</td>
+          </tr>
+          <tr>
+            <td>Padding</td>
+            <td>None, SM, MD, LG</td>
+            <td class="req"><code>spacing/3</code> through <code>spacing/5</code></td>
+          </tr>
+          <tr>
+            <td>Slots</td>
+            <td>Header, Body, Footer (optional sub-components)</td>
+            <td class="req">Header border uses <code>color/border/default</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Input -->
+    <div class="card">
+      <div class="card-title">Input <span class="badge badge--required">Required</span></div>
+      <table class="token-table">
+        <thead><tr><th>Property</th><th>Variants / states</th><th>Token used</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>State</td>
+            <td>Default, Focus, Error, Disabled</td>
+            <td class="req">Focus ring: <code>color/brand/subtle</code>; Error border: <code>color/feedback/error</code></td>
+          </tr>
+          <tr>
+            <td>Size</td>
+            <td>Small, Medium, Large</td>
+            <td class="req">Height + padding from <code>spacing/*</code></td>
+          </tr>
+          <tr>
+            <td>Label + helper text</td>
+            <td>Boolean show/hide</td>
+            <td class="req">Label: <code>color/text/primary</code>; helper: <code>color/text/secondary</code>; error text: <code>color/feedback/error</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Badge -->
+    <div class="card">
+      <div class="card-title">Badge <span class="badge badge--required">Required</span></div>
+      <table class="token-table">
+        <thead><tr><th>Property</th><th>Variants</th><th>Token used</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Variant</td>
+            <td>Brand, Success, Error, Neutral</td>
+            <td class="req">Background uses subtle token; text uses darker stop from same ramp</td>
+          </tr>
+          <tr>
+            <td>Dot indicator</td>
+            <td>Boolean on/off</td>
+            <td class="req">Dot fill matches variant's default token</td>
+          </tr>
+          <tr>
+            <td>Size</td>
+            <td>Small, Medium</td>
+            <td class="req">Padding from <code>spacing/1</code> and <code>spacing/2</code></td>
+          </tr>
+          <tr>
+            <td>Border radius</td>
+            <td>All</td>
+            <td class="req"><code>radius/full</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+  <!-- ══ PART 4: MODES ══ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <div>
+        <div class="section-title">Light &amp; dark mode preview</div>
+        <div class="section-subtitle">Prove your tokens work by switching modes on assembled screens</div>
+      </div>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-dot">1</div>
+        <div class="step-line"></div>
+        <div class="step-body">
+          <h4>Assemble a preview screen on the ☀️ Light preview page</h4>
+          <p>Create a 390×844 frame (iPhone 14 size). Drop in instances of all four components in realistic arrangements — a form with Input + Button, a list of Cards with Badges. This is not a full design; it's a token stress test.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-dot">2</div>
+        <div class="step-line"></div>
+        <div class="step-body">
+          <h4>Duplicate the frame to the 🌙 Dark preview page</h4>
+          <p>Select the frame → right-click → Move to page → Dark preview. Do not re-design anything.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-dot">3</div>
+        <div class="step-line"></div>
+        <div class="step-body">
+          <h4>Switch the mode on the dark frame</h4>
+          <p>Select the frame → in the right panel under Variables, change the Semantic collection mode from Light to Dark. Every component should update automatically. If any color doesn't change, that component has a hardcoded value — find and fix it.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-dot">4</div>
+        <div class="step-line"></div>
+        <div class="step-body">
+          <h4>Side-by-side screenshot on your Cover page</h4>
+          <p>Place a cropped screenshot of both frames on your Cover page to demonstrate the mode switch works.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout callout--warn">
+      <span class="callout-icon">⚠️</span>
+      <p><strong>Common failure:</strong> Components built with "detached" instances or hardcoded fills won't respond to mode changes. If your dark mode doesn't work, inspect each layer — click the fill and check whether it shows a variable name or a hex value.</p>
+    </div>
+  </div>
+
+
+  <!-- ══ PART 5: TOKENS STUDIO ══ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">5</div>
+      <div>
+        <div class="section-title">Tokens Studio export</div>
+        <div class="section-subtitle">Bridge your Figma variables to the code project</div>
+      </div>
+    </div>
+
+    <div class="callout callout--tip" style="margin-bottom: 24px;">
+      <span class="callout-icon">🔌</span>
+      <p>Install from the Figma Community: search <strong>"Tokens Studio for Figma"</strong> by Jan Six. It's free for the features you need here.</p>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-dot">1</div>
+        <div class="step-line"></div>
+        <div class="step-body">
+          <h4>Open Tokens Studio → Import Variables</h4>
+          <p>In the plugin panel, click the settings gear → Import Variables from Figma. It will read your Global and Semantic collections and generate a matching token set.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-dot">2</div>
+        <div class="step-line"></div>
+        <div class="step-body">
+          <h4>Review the token structure in the plugin</h4>
+          <p>You should see two sets: Global and Semantic. Expand a few entries and verify the names match the <code>color/brand/default</code> convention — forward slashes become nested JSON keys. Fix any naming inconsistencies now before export.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-dot">3</div>
+        <div class="step-line"></div>
+        <div class="step-body">
+          <h4>Export to JSON</h4>
+          <p>Click the export icon (↑) → Export to file → save as <code>tokens.json</code>. This is the file you'll drop into <code>src/tokens/</code> in the Pebble UI code project for Part 2.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-dot">4</div>
+        <div class="step-line"></div>
+        <div class="step-body">
+          <h4>Screenshot the plugin panel for your Tokens Studio page</h4>
+          <p>Take a screenshot showing the imported token tree in the plugin. Paste it on the 🔌 Tokens Studio page in your Figma file as documentation.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout callout--good">
+      <span class="callout-icon">✅</span>
+      <p><strong>Verify the export worked:</strong> Open <code>tokens.json</code> in a text editor. You should see nested objects like <code>"color": { "brand": { "default": { "value": "{color.purple.600}" } } }</code>. If you see raw hex values instead of references, the semantic layer isn't set up correctly in Figma.</p>
+    </div>
+  </div>
+
+
+  <!-- ══ CHECKLIST ══ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">✓</div>
+      <div>
+        <div class="section-title">Submission checklist</div>
+        <div class="section-subtitle">Go through this before sharing your file</div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title">File structure</div>
+        <ul class="checklist">
+          <li><span class="check-box"></span><span>All 6 pages exist with correct names</span></li>
+          <li><span class="check-box"></span><span>Cover page has your name + date</span></li>
+          <li><span class="check-box"></span><span>Tokens page shows a readable reference layout</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Variables</div>
+        <ul class="checklist">
+          <li><span class="check-box"></span><span>Global collection: full palette + spacing + radius + type</span></li>
+          <li><span class="check-box"></span><span>Semantic collection: all roles defined as references</span></li>
+          <li><span class="check-box"></span><span>Zero raw hex values in Semantic collection</span></li>
+          <li><span class="check-box"></span><span>Dark mode values set for all Semantic color variables</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Components</div>
+        <ul class="checklist">
+          <li><span class="check-box"></span><span>Button — 4 variants, 3 sizes, 4 states</span></li>
+          <li><span class="check-box"></span><span>Card — 3 variants, Header/Body/Footer slots</span></li>
+          <li><span class="check-box"></span><span>Input — 4 states, label + helper + error text</span></li>
+          <li><span class="check-box"></span><span>Badge — 4 variants, dot toggle, 2 sizes</span></li>
+          <li><span class="check-box"></span><span>No hardcoded fills in any component layer</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Modes &amp; export</div>
+        <ul class="checklist">
+          <li><span class="check-box"></span><span>Light preview frame assembled with all 4 components</span></li>
+          <li><span class="check-box"></span><span>Dark preview is a mode switch — not a redesign</span></li>
+          <li><span class="check-box"></span><span>Side-by-side screenshot on Cover page</span></li>
+          <li><span class="check-box"></span><span>tokens.json exported and verified (references, not hex)</span></li>
+          <li><span class="check-box"></span><span>Tokens Studio screenshot on plugin page</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══ RUBRIC ══ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">★</div>
+      <div>
+        <div class="section-title">Rubric</div>
+        <div class="section-subtitle">100 points total</div>
+      </div>
+    </div>
+
+    <div class="rubric-wrap">
+      <div class="rubric-row">
+        <div class="rubric-cell header">Criterion</div>
+        <div class="rubric-cell header">Full</div>
+        <div class="rubric-cell header">Partial</div>
+        <div class="rubric-cell header">Missing</div>
+      </div>
+      <div class="rubric-row">
+        <div class="rubric-cell"><strong>Token architecture</strong> — Global and Semantic collections exist; Semantic variables use references, not raw values; naming follows forward-slash convention</div>
+        <div class="rubric-cell pts">25</div>
+        <div class="rubric-cell pts">15</div>
+        <div class="rubric-cell pts">0</div>
+      </div>
+      <div class="rubric-row">
+        <div class="rubric-cell"><strong>Components</strong> — All four components built as variant sets; every fill, stroke, padding, and radius references a Semantic variable</div>
+        <div class="rubric-cell pts">30</div>
+        <div class="rubric-cell pts">15</div>
+        <div class="rubric-cell pts">0</div>
+      </div>
+      <div class="rubric-row">
+        <div class="rubric-cell"><strong>Dark mode</strong> — Semantic collection has a Dark mode; both preview frames exist; switching modes updates all components without manual edits</div>
+        <div class="rubric-cell pts">20</div>
+        <div class="rubric-cell pts">10</div>
+        <div class="rubric-cell pts">0</div>
+      </div>
+      <div class="rubric-row">
+        <div class="rubric-cell"><strong>Tokens Studio export</strong> — tokens.json is well-formed; semantic tokens show references not hex; file validates against Pebble UI project</div>
+        <div class="rubric-cell pts">15</div>
+        <div class="rubric-cell pts">8</div>
+        <div class="rubric-cell pts">0</div>
+      </div>
+      <div class="rubric-row">
+        <div class="rubric-cell"><strong>Documentation</strong> — Tokens page is legible and complete; Cover has name + mode screenshot; Tokens Studio page has plugin screenshot</div>
+        <div class="rubric-cell pts">10</div>
+        <div class="rubric-cell pts">5</div>
+        <div class="rubric-cell pts">0</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+  <div class="callout callout--tip">
+    <span class="callout-icon">→</span>
+    <div>
+      <p><strong>What comes next (Part 2):</strong> You'll drop your <code>tokens.json</code> into the Pebble UI code project, run <code>npm run tokens</code>, and watch your Figma decisions become CSS custom properties. Every component in Storybook will update to reflect your design choices.</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  Pebble UI — IXD Design Systems · Part 1 of 4: Figma Token System
+</div>
+
+</body>
+</html>

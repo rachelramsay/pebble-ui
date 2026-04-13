@@ -14,12 +14,25 @@ npm run storybook     # open component library at localhost:6006
 npm run dev           # open kitchen-sink demo at localhost:5173
 ```
 
+### Assignment materials (`design/`)
+
+Static HTML for the same student build lives next to the code:
+
+| File | What it is |
+|------|------------|
+| [`design/index.html`](design/index.html) | Short index linking the Figma brief and the mobile mockup |
+| [`design/pebble-figma-assignment.html`](design/pebble-figma-assignment.html) | **Part 1 — Figma:** tokens, components, Tokens Studio → `tokens.json` |
+| [`design/final_project_mobile_mockup.html`](design/final_project_mobile_mockup.html) | **Final project:** interactive mobile prototype (Browse / Detail / Checkout, light & dark) |
+
+Open those files in a browser from the repo (double-click or drag into a tab). They link to each other and describe how `src/tokens/tokens.json` and `npm run tokens` connect to the assignment.
+
 ---
 
 ## Project structure
 
 ```
 pebble-ui/
+├── design/                   assignment HTML — Figma brief + mobile mockup (linked)
 ├── src/
 │   ├── tokens/
 │   │   ├── tokens.json       ← SOURCE OF TRUTH — edit this (or export from Figma)

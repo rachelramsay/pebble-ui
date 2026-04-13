@@ -1,0 +1,347 @@
+
+<style>
+.outer{display:flex;flex-direction:column;align-items:center;padding:24px 16px;background:var(--color-background-tertiary);gap:16px}
+.controls{display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:center}
+.screen-label{font-size:12px;color:var(--color-text-secondary)}
+.tab-row{display:flex;gap:6px}
+.tab-btn{padding:5px 14px;border-radius:999px;font-size:12px;font-weight:500;cursor:pointer;border:1.5px solid transparent;transition:all 120ms;background:var(--color-background-secondary);color:var(--color-text-secondary);border-color:var(--color-border-tertiary)}
+.tab-btn.active{background:#EEEDFE;color:#534AB7;border-color:#AFA9EC}
+.dark .tab-btn.active{background:#3C3489;color:#CECBF6;border-color:#534AB7}
+.toggle-wrap{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--color-text-secondary);cursor:pointer;user-select:none}
+.toggle-track{width:36px;height:20px;border-radius:10px;background:#D3D1C7;position:relative;transition:background 200ms;flex-shrink:0}
+.toggle-track.on{background:#534AB7}
+.toggle-thumb{width:16px;height:16px;border-radius:50%;background:#fff;position:absolute;top:2px;left:2px;transition:transform 200ms}
+.toggle-track.on .toggle-thumb{transform:translateX(16px)}
+
+.phone{width:375px;min-height:700px;border-radius:40px;overflow:hidden;border:8px solid #1a1a1a;background:#fff;box-shadow:0 20px 60px rgba(0,0,0,0.18);position:relative;transition:background 200ms}
+.phone.dark{background:#0f0f0f;border-color:#333}
+.status-bar{height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;font-size:12px;font-weight:500}
+.phone .sb-time{color:#1a1a1a}
+.phone.dark .sb-time{color:#f0f0f0}
+.sb-icons{display:flex;gap:4px;align-items:center}
+.sb-icon{width:16px;height:10px;border:1.5px solid currentColor;border-radius:2px;position:relative}
+.phone .sb-icon{color:#1a1a1a}
+.phone.dark .sb-icon{color:#f0f0f0}
+
+.app-inner{display:flex;flex-direction:column;height:calc(700px - 44px)}
+
+:root{
+  --b:#534AB7;--bh:#3C3489;--bs:#EEEDFE;--bo:#fff;
+  --s:#fff;--ss:#F1EFE8;
+  --t:#2C2C2A;--tm:#5F5E5A;--td:#B4B2A9;
+  --bd:#D3D1C7;--bds:#B4B2A9;
+  --ok:#1D9E75;--oks:#E1F5EE;--okt:#085041;
+  --er:#D85A30;--ers:#FAECE7;--ert:#993C1D;
+}
+.dark-mode{
+  --b:#7F77DD;--bh:#AFA9EC;--bs:#26215C;--bo:#0f0f0f;
+  --s:#1a1a1a;--ss:#111111;
+  --t:#F1EFE8;--tm:#B4B2A9;--td:#5F5E5A;
+  --bd:#2C2C2A;--bds:#444441;
+  --ok:#5DCAA5;--oks:#04342C;--okt:#9FE1CB;
+  --er:#F0997B;--ers:#4A1B0C;--ert:#F5C4B3;
+}
+
+.p-nav{background:var(--s);border-bottom:1px solid var(--bd);padding:0 20px;height:52px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;transition:background 200ms,border-color 200ms}
+.p-nav-title{font-size:17px;font-weight:700;color:var(--b);transition:color 200ms}
+.p-nav-right{font-size:11px;font-weight:500;color:var(--tm);transition:color 200ms}
+.p-scroll{flex:1;overflow-y:auto;padding:16px;background:var(--ss);transition:background 200ms}
+.p-screen{display:none}
+.p-screen.active{display:block}
+.p-h1{font-size:20px;font-weight:700;color:var(--t);margin-bottom:4px;transition:color 200ms}
+.p-sub{font-size:13px;color:var(--tm);margin-bottom:16px;transition:color 200ms}
+.p-input{width:100%;height:40px;border:1.5px solid var(--bds);border-radius:10px;padding:0 14px;font-size:14px;color:var(--t);background:var(--s);outline:none;transition:all 150ms}
+.p-input:focus{border-color:var(--b);box-shadow:0 0 0 3px var(--bs)}
+.p-input::placeholder{color:var(--td)}
+.search-wrap{position:relative;margin-bottom:12px}
+.s-ico{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--td)}
+.p-input.search-inp{padding-left:36px}
+.tag-row{display:flex;gap:6px;margin-bottom:16px;overflow-x:auto;padding-bottom:2px}
+.tag-pill{padding:5px 12px;border-radius:999px;font-size:12px;font-weight:500;border:1.5px solid var(--bd);background:var(--s);color:var(--tm);cursor:pointer;white-space:nowrap;transition:all 120ms;flex-shrink:0}
+.tag-pill.active{background:var(--bs);color:var(--b);border-color:var(--b)}
+.p-card{background:var(--s);border:1.5px solid var(--bd);border-radius:16px;overflow:hidden;margin-bottom:12px;cursor:pointer;transition:all 150ms}
+.p-card:active{transform:scale(0.98)}
+.p-card-img{height:110px;background:var(--bs);display:flex;align-items:center;justify-content:center;font-size:40px;transition:background 200ms}
+.p-card-body{padding:12px}
+.p-card-title{font-size:15px;font-weight:600;color:var(--t);transition:color 200ms}
+.p-card-meta{font-size:12px;color:var(--tm);margin:2px 0 8px;transition:color 200ms}
+.p-card-row{display:flex;align-items:center;justify-content:space-between}
+.badge{display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:600;padding:3px 8px;border-radius:999px}
+.badge-ok{background:var(--oks);color:var(--okt)}
+.badge-er{background:var(--ers);color:var(--ert)}
+.badge-br{background:var(--bs);color:var(--b)}
+.dot{width:5px;height:5px;border-radius:50%;background:currentColor;display:inline-block}
+.price{font-size:15px;font-weight:700;color:var(--t);transition:color 200ms}
+.btn-pr{width:100%;height:44px;border-radius:12px;background:var(--b);color:var(--bo);border:none;font-size:15px;font-weight:600;cursor:pointer;transition:all 150ms;margin-bottom:8px}
+.btn-pr:active{opacity:.85}
+.btn-sc{width:100%;height:44px;border-radius:12px;background:transparent;color:var(--b);border:1.5px solid var(--bds);font-size:15px;font-weight:500;cursor:pointer;transition:all 150ms;margin-bottom:16px}
+.back-row{display:flex;align-items:center;gap:6px;color:var(--b);font-size:14px;font-weight:500;cursor:pointer;margin-bottom:16px;background:none;border:none;padding:0;transition:color 200ms}
+.detail-img{height:200px;background:var(--bs);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:72px;margin-bottom:16px;transition:background 200ms}
+.detail-title{font-size:20px;font-weight:700;color:var(--t);margin-bottom:6px;transition:color 200ms}
+.detail-desc{font-size:13px;color:var(--tm);line-height:1.6;margin-bottom:16px;transition:color 200ms}
+.stat-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:20px}
+.stat{background:var(--ss);border-radius:10px;padding:10px;text-align:center;transition:background 200ms}
+.stat-label{font-size:10px;color:var(--tm);margin-bottom:3px;transition:color 200ms}
+.stat-val{font-size:13px;font-weight:600;color:var(--t);transition:color 200ms}
+.price-row{display:flex;align-items:baseline;gap:4px;margin-bottom:16px}
+.big-price{font-size:28px;font-weight:700;color:var(--t);transition:color 200ms}
+.big-price-unit{font-size:14px;color:var(--tm);transition:color 200ms}
+.form-label{font-size:13px;font-weight:500;color:var(--t);margin-bottom:5px;display:block;transition:color 200ms}
+.form-group{margin-bottom:14px}
+.form-hint{font-size:11px;color:var(--tm);margin-top:4px;transition:color 200ms}
+.form-err{font-size:11px;color:var(--er);margin-top:4px;transition:color 200ms}
+.order-summary{background:var(--ss);border-radius:12px;padding:14px;margin-bottom:16px;transition:background 200ms}
+.os-row{display:flex;justify-content:space-between;align-items:center}
+.os-name{font-size:13px;font-weight:500;color:var(--t);transition:color 200ms}
+.os-qty{font-size:12px;color:var(--tm);transition:color 200ms}
+.os-price{font-size:16px;font-weight:700;color:var(--t);transition:color 200ms}
+.token-hint{font-size:10px;color:var(--td);text-align:center;margin-top:8px;font-family:monospace;transition:color 200ms}
+.p-bottom-nav{height:60px;background:var(--s);border-top:1px solid var(--bd);display:flex;align-items:center;justify-content:space-around;flex-shrink:0;transition:background 200ms,border-color 200ms}
+.bnav-item{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:4px 16px}
+.bnav-icon{width:22px;height:22px;border-radius:6px;background:var(--bd);transition:background 200ms}
+.bnav-item.active .bnav-icon{background:var(--b)}
+.bnav-label{font-size:10px;font-weight:500;color:var(--td);transition:color 200ms}
+.bnav-item.active .bnav-label{color:var(--b)}
+</style>
+
+<h2 class="sr-only">Mobile final project mockup with light and dark mode toggle, showing three screens: Browse, Detail, and Checkout</h2>
+
+<div class="outer" id="outer">
+  <div class="controls">
+    <div class="tab-row" id="tab-row">
+      <button class="tab-btn active" onclick="showScreen('browse')">Browse</button>
+      <button class="tab-btn" onclick="showScreen('detail',0)">Detail</button>
+      <button class="tab-btn" onclick="showScreen('checkout')">Checkout</button>
+    </div>
+    <div class="toggle-wrap" onclick="toggleDark()">
+      <div class="toggle-track" id="dark-track"><div class="toggle-thumb"></div></div>
+      <span id="dark-label">Light mode</span>
+    </div>
+  </div>
+
+  <div class="phone" id="phone">
+    <div class="status-bar">
+      <span class="sb-time">9:41</span>
+      <div class="sb-icons">
+        <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor" style="color:inherit"><rect x="0" y="3" width="3" height="9" rx="1"/><rect x="4.5" y="2" width="3" height="10" rx="1"/><rect x="9" y="0" width="3" height="12" rx="1"/><rect x="13.5" y="1" width="2.5" height="11" rx="1" opacity=".3"/></svg>
+        <svg width="15" height="12" viewBox="0 0 15 12" fill="currentColor" style="color:inherit"><path d="M7.5 3C9.8 3 11.8 4 13.2 5.6L14.5 4.2C12.7 2.3 10.2 1 7.5 1S2.3 2.3.5 4.2L1.8 5.6C3.2 4 5.2 3 7.5 3z"/><path d="M7.5 6C9 6 10.3 6.6 11.3 7.6L12.6 6.2C11.2 4.9 9.4 4 7.5 4S3.8 4.9 2.4 6.2L3.7 7.6C4.7 6.6 6 6 7.5 6z"/><circle cx="7.5" cy="10" r="2"/></svg>
+        <svg width="26" height="12" viewBox="0 0 26 12" fill="currentColor" style="color:inherit"><rect x="0" y="1" width="22" height="10" rx="3" fill="none" stroke="currentColor" stroke-width="1"/><rect x="22" y="4" width="2.5" height="4" rx="1" opacity=".4"/><rect x="1.5" y="2.5" width="15" height="7" rx="2" opacity=".9"/></svg>
+      </div>
+    </div>
+
+    <div class="app-inner" id="app-inner">
+      <div class="p-nav">
+        <span class="p-nav-title" id="nav-title">Plant shop</span>
+        <span class="p-nav-right" id="nav-right">6 plants</span>
+      </div>
+
+      <div class="p-scroll" id="p-scroll">
+
+        <!-- Browse -->
+        <div class="p-screen active" id="screen-browse">
+          <div class="search-wrap">
+            <svg class="s-ico" width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="6" r="4.5"/><path d="M9.5 9.5l3 3"/></svg>
+            <input class="p-input search-inp" placeholder="Search plants…" oninput="filterPlants(this.value)" id="psearch"/>
+          </div>
+          <div class="tag-row">
+            <div class="tag-pill active" onclick="setTag(this,'all')" id="tag-all">All</div>
+            <div class="tag-pill" onclick="setTag(this,'easy')" id="tag-easy">Easy care</div>
+            <div class="tag-pill" onclick="setTag(this,'rare')" id="tag-rare">Rare finds</div>
+            <div class="tag-pill" onclick="setTag(this,'tropical')" id="tag-tropical">Tropical</div>
+          </div>
+          <div id="plant-list"></div>
+        </div>
+
+        <!-- Detail -->
+        <div class="p-screen" id="screen-detail">
+          <button class="back-row" onclick="showScreen('browse')">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 2L4 7l5 5"/></svg>
+            Back
+          </button>
+          <div class="detail-img" id="d-img"></div>
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px">
+            <div>
+              <div class="detail-title" id="d-name"></div>
+              <div class="price-row"><span class="big-price" id="d-price"></span><span class="big-price-unit">/ plant</span></div>
+            </div>
+            <span class="badge" id="d-badge"></span>
+          </div>
+          <div class="detail-desc" id="d-desc"></div>
+          <div class="stat-row">
+            <div class="stat"><div class="stat-label">Light</div><div class="stat-val" id="d-light"></div></div>
+            <div class="stat"><div class="stat-label">Water</div><div class="stat-val" id="d-water"></div></div>
+            <div class="stat"><div class="stat-label">Size</div><div class="stat-val" id="d-size"></div></div>
+          </div>
+          <button class="btn-pr" onclick="showScreen('checkout')">Buy now</button>
+          <button class="btn-sc">Add to wishlist</button>
+          <div class="token-hint">--color-brand · --radius-lg · --space-4</div>
+        </div>
+
+        <!-- Checkout -->
+        <div class="p-screen" id="screen-checkout">
+          <button class="back-row" onclick="showScreen('detail',lastId)">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 2L4 7l5 5"/></svg>
+            Back
+          </button>
+          <div class="p-h1">Checkout</div>
+          <p class="p-sub">Delivery details</p>
+          <div class="form-group">
+            <label class="form-label">Full name <span style="color:var(--er)">*</span></label>
+            <input class="p-input" placeholder="Rachel Hansen" id="f-name"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email <span style="color:var(--er)">*</span></label>
+            <input class="p-input" type="email" placeholder="you@example.com" id="f-email" oninput="validateEmail()"/>
+            <div class="form-hint" id="email-msg">Order confirmation sent here</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+            <div class="form-group">
+              <label class="form-label">City</label>
+              <input class="p-input" placeholder="St. George"/>
+            </div>
+            <div class="form-group">
+              <label class="form-label">ZIP</label>
+              <input class="p-input" placeholder="84770"/>
+            </div>
+          </div>
+          <div class="order-summary">
+            <div class="os-row">
+              <div><div class="os-name" id="os-name">Monstera deliciosa</div><div class="os-qty">Qty: 1</div></div>
+              <div class="os-price" id="os-price">$34.00</div>
+            </div>
+          </div>
+          <button class="btn-pr" id="submit-btn" onclick="submitOrder()">Place order</button>
+          <div class="token-hint">--color-error · --color-surface · --font-sans</div>
+        </div>
+
+      </div>
+
+      <div class="p-bottom-nav">
+        <div class="bnav-item active" id="bnav-browse" onclick="showScreen('browse')">
+          <div class="bnav-icon"></div>
+          <span class="bnav-label">Browse</span>
+        </div>
+        <div class="bnav-item" id="bnav-detail" onclick="showScreen('detail',lastId)">
+          <div class="bnav-icon"></div>
+          <span class="bnav-label">Detail</span>
+        </div>
+        <div class="bnav-item" id="bnav-checkout" onclick="showScreen('checkout')">
+          <div class="bnav-icon"></div>
+          <span class="bnav-label">Checkout</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const plants = [
+  {id:0,name:'Monstera deliciosa',emoji:'🌿',price:'$34',tag:'tropical',badge:'ok',badgeLabel:'In stock',desc:'Dramatic split leaves, thrives in indirect light. The perfect statement plant.',light:'Indirect',water:'Weekly',size:'Large'},
+  {id:1,name:'Fiddle leaf fig',emoji:'🌳',price:'$52',tag:'rare',badge:'br',badgeLabel:'Popular',desc:'Violin-shaped leaves on a striking trunk. Needs consistent bright indirect light.',light:'Bright',water:'Weekly',size:'XL'},
+  {id:2,name:'Golden pothos',emoji:'🍃',price:'$18',tag:'easy',badge:'ok',badgeLabel:'In stock',desc:'Nearly indestructible trailing vine. Ideal for beginners and low-light spaces.',light:'Low–med',water:'Biweekly',size:'Small'},
+  {id:3,name:'Bird of paradise',emoji:'🌺',price:'$68',tag:'tropical',badge:'er',badgeLabel:'Low stock',desc:'Enormous paddle leaves with an architectural presence. Loves direct sun.',light:'Direct',water:'Weekly',size:'XL'},
+  {id:4,name:'Peace lily',emoji:'🤍',price:'$22',tag:'easy',badge:'ok',badgeLabel:'In stock',desc:'Elegant white blooms that tolerate low light and occasional neglect.',light:'Low',water:'Biweekly',size:'Med'},
+  {id:5,name:'String of pearls',emoji:'💚',price:'$28',tag:'rare',badge:'br',badgeLabel:'New',desc:'Cascading pearl-like succulent, stunning in hanging pots near a sunny window.',light:'Bright',water:'Sparse',size:'Small'},
+];
+
+let dark = false, activeTag = 'all', lastId = 0;
+
+function renderList(list) {
+  document.getElementById('plant-list').innerHTML = list.map(p => `
+    <div class="p-card" onclick="showScreen('detail',${p.id})">
+      <div class="p-card-img">${p.emoji}</div>
+      <div class="p-card-body">
+        <div class="p-card-title">${p.name}</div>
+        <div class="p-card-meta">${p.tag==='easy'?'Easy care':p.tag==='rare'?'Rare find':'Tropical'}</div>
+        <div class="p-card-row">
+          <span class="badge badge-${p.badge}"><span class="dot"></span> ${p.badgeLabel}</span>
+          <span class="price">${p.price}</span>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function filterPlants(q) {
+  renderList(plants.filter(p =>
+    p.name.toLowerCase().includes(q.toLowerCase()) &&
+    (activeTag==='all'||p.tag===activeTag)));
+}
+
+function setTag(el, tag) {
+  document.querySelectorAll('.tag-pill').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  activeTag = tag;
+  filterPlants(document.getElementById('psearch').value);
+}
+
+function showScreen(name, id) {
+  document.querySelectorAll('.p-screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-'+name).classList.add('active');
+  document.querySelectorAll('.bnav-item').forEach(b=>b.classList.remove('active'));
+  document.getElementById('bnav-'+name).classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-btn')[{browse:0,detail:1,checkout:2}[name]].classList.add('active');
+  document.getElementById('p-scroll').scrollTop = 0;
+  const labels = {browse:'Plant shop',detail:'Product detail',checkout:'Checkout'};
+  const rights = {browse:'6 plants',detail:'',checkout:'1 item'};
+  document.getElementById('nav-title').textContent = labels[name];
+  document.getElementById('nav-right').textContent = rights[name];
+  if (name==='detail' && id!==undefined) {
+    lastId = id;
+    const p = plants[id];
+    document.getElementById('d-img').textContent = p.emoji;
+    document.getElementById('d-name').textContent = p.name;
+    document.getElementById('d-price').textContent = p.price;
+    document.getElementById('d-desc').textContent = p.desc;
+    document.getElementById('d-light').textContent = p.light;
+    document.getElementById('d-water').textContent = p.water;
+    document.getElementById('d-size').textContent = p.size;
+    const b = document.getElementById('d-badge');
+    b.className = 'badge badge-'+p.badge;
+    b.innerHTML = `<span class="dot"></span> ${p.badgeLabel}`;
+    document.getElementById('os-name').textContent = p.name;
+    document.getElementById('os-price').textContent = p.price+'.00';
+  }
+}
+
+function toggleDark() {
+  dark = !dark;
+  const phone = document.getElementById('phone');
+  const track = document.getElementById('dark-track');
+  const label = document.getElementById('dark-label');
+  const appInner = document.getElementById('app-inner');
+  phone.classList.toggle('dark', dark);
+  track.classList.toggle('on', dark);
+  label.textContent = dark ? 'Dark mode' : 'Light mode';
+  appInner.classList.toggle('dark-mode', dark);
+  document.getElementById('p-scroll').classList.toggle('dark-mode', dark);
+  document.querySelector('.p-nav').classList.toggle('dark-mode', dark);
+  document.querySelector('.p-bottom-nav').classList.toggle('dark-mode', dark);
+}
+
+function validateEmail() {
+  const v = document.getElementById('f-email').value;
+  const msg = document.getElementById('email-msg');
+  if (v && !v.includes('@')) {
+    msg.className = 'form-err';
+    msg.textContent = 'Enter a valid email address';
+  } else {
+    msg.className = 'form-hint';
+    msg.textContent = 'Order confirmation sent here';
+  }
+}
+
+function submitOrder() {
+  const btn = document.getElementById('submit-btn');
+  btn.textContent = 'Placing order…';
+  btn.disabled = true; btn.style.opacity = '.6';
+  setTimeout(()=>{
+    btn.textContent = 'Order placed!';
+    btn.style.background = 'var(--ok)';
+    btn.style.opacity = '1';
+    btn.disabled = false;
+  }, 1200);
+}
+
+renderList(plants);
+</script>

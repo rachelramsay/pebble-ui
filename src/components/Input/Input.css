@@ -1,0 +1,74 @@
+/* Input.css */
+
+.pebble-input-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  font-family: var(--font-sans);
+}
+
+.pebble-input__label {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.pebble-input__required { color: var(--color-error); }
+
+.pebble-input__field {
+  width: 100%;
+  box-sizing: border-box;
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+  outline: none;
+}
+
+.pebble-input__field::placeholder { color: var(--color-text-disabled); }
+
+.pebble-input__field:hover:not(:disabled) {
+  border-color: var(--color-brand);
+}
+.pebble-input__field:focus {
+  border-color: var(--color-brand);
+  box-shadow: 0 0 0 3px var(--color-brand-subtle);
+}
+
+/* ── Sizes ── */
+.pebble-input-wrap--sm .pebble-input__field { padding: var(--space-1) var(--space-2); height: 28px; font-size: var(--text-xs); }
+.pebble-input-wrap--md .pebble-input__field { padding: var(--space-2) var(--space-3); height: 36px; }
+.pebble-input-wrap--lg .pebble-input__field { padding: var(--space-3) var(--space-4); height: 44px; font-size: var(--text-md); }
+
+/* ── Error state ── */
+.pebble-input-wrap--error .pebble-input__field {
+  border-color: var(--color-error);
+}
+.pebble-input-wrap--error .pebble-input__field:focus {
+  box-shadow: 0 0 0 3px var(--pebble-semantic-color-feedback-error-subtle, #FAECE7);
+}
+
+/* ── Disabled ── */
+.pebble-input-wrap--disabled .pebble-input__field {
+  background: var(--color-surface-subtle);
+  color: var(--color-text-disabled);
+  cursor: not-allowed;
+}
+.pebble-input-wrap--disabled .pebble-input__label {
+  color: var(--color-text-disabled);
+}
+
+/* ── Helper / Error text ── */
+.pebble-input__helper {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  margin: 0;
+}
+.pebble-input__error {
+  font-size: var(--text-xs);
+  color: var(--color-error);
+  margin: 0;
+}

@@ -1,0 +1,69 @@
+/* Card.css */
+
+.pebble-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  border: 1.5px solid var(--color-border);
+  font-family: var(--font-sans);
+  overflow: hidden;
+  transition: box-shadow 150ms ease, transform 150ms ease;
+}
+
+/* ── Variants ── */
+.pebble-card--default   { border-color: var(--color-border); }
+.pebble-card--outlined  { border-color: var(--color-border-strong); }
+.pebble-card--elevated  { border-color: transparent; box-shadow: var(--shadow-md); }
+
+/* ── Padding ── */
+.pebble-card--pad-none { padding: 0; }
+.pebble-card--pad-sm   { padding: var(--space-3); }
+.pebble-card--pad-md   { padding: var(--space-4); }
+.pebble-card--pad-lg   { padding: var(--space-5); }
+
+/* ── Clickable ── */
+.pebble-card--clickable {
+  cursor: pointer;
+  user-select: none;
+}
+.pebble-card--clickable:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+.pebble-card--clickable:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+.pebble-card--clickable:focus-visible {
+  outline: 2.5px solid var(--color-brand);
+  outline-offset: 2px;
+}
+
+/* ── Structured slots ── */
+.pebble-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+}
+.pebble-card__header-text { flex: 1; min-width: 0; }
+.pebble-card__title {
+  font-size: var(--text-md);
+  font-weight: 500;
+  color: var(--color-text);
+  margin: 0;
+}
+.pebble-card__subtitle {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  margin: var(--space-1) 0 0;
+}
+.pebble-card__body   { padding: var(--space-4); }
+.pebble-card__footer {
+  padding: var(--space-3) var(--space-4);
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}

@@ -1,0 +1,46 @@
+/* Badge.css */
+
+.pebble-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-family: var(--font-sans);
+  font-weight: 500;
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+}
+
+/* ── Sizes ── */
+.pebble-badge--sm { font-size: var(--text-xs); padding: 2px var(--space-2); }
+.pebble-badge--md { font-size: var(--text-xs); padding: var(--space-1) var(--space-3); }
+
+/* ── Variants ── */
+.pebble-badge--brand {
+  background: var(--color-brand-subtle);
+  color: var(--color-brand);
+}
+.pebble-badge--success {
+  background: var(--pebble-semantic-color-feedback-success-subtle);
+  color: var(--pebble-global-color-teal-700);
+}
+.pebble-badge--error {
+  background: var(--pebble-semantic-color-feedback-error-subtle);
+  color: var(--pebble-global-color-coral-700);
+}
+.pebble-badge--neutral {
+  background: var(--color-surface-subtle);
+  color: var(--color-text-muted);
+}
+
+/* ── Dot indicator ── */
+.pebble-badge__dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.pebble-badge--brand   .pebble-badge__dot { background: var(--color-brand); }
+.pebble-badge--success .pebble-badge__dot { background: var(--color-success); }
+.pebble-badge--error   .pebble-badge__dot { background: var(--color-error); }
+.pebble-badge--neutral .pebble-badge__dot { background: var(--color-text-muted); }

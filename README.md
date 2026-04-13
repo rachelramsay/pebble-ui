@@ -24,7 +24,9 @@ Static HTML for the same student build lives next to the code:
 | [`design/pebble-figma-assignment.html`](design/pebble-figma-assignment.html) | **Part 1 — Figma:** tokens, components, Tokens Studio → `tokens.json` |
 | [`design/final_project_mobile_mockup.html`](design/final_project_mobile_mockup.html) | **Final project:** interactive mobile prototype (Browse / Detail / Checkout, light & dark) |
 
-Open those files in a browser from the repo (double-click or drag into a tab). They link to each other and describe how `src/tokens/tokens.json` and `npm run tokens` connect to the assignment.
+**Figma (canonical file):** [Pebble UI Document](https://www.figma.com/design/uByhdx791U9jjl4oDlaKvu/PebbleUIDocument?node-id=0-1) — same URL always opens this file; your latest saves appear here. Export tokens to `src/tokens/tokens.json`, then run `npm run tokens`.
+
+Open the `design/` HTML files in a browser from the repo (double-click or drag into a tab). They link to each other and describe how `src/tokens/tokens.json` and `npm run tokens` connect to the assignment.
 
 ---
 
